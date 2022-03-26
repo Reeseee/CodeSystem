@@ -1,10 +1,10 @@
 package com.hlc.codeanalyzesystem.ComplexityAlgorithm.Halstead;
 
 import com.alibaba.fastjson.JSON;
+import com.hlc.codeanalyzesystem.entity.TreeNodeVo;
+import com.hlc.codeanalyzesystem.util.TransformUtil;
 import org.eclipse.jdt.core.compiler.IProblem;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HalsteadUtil {
-    public static HalsteadVisitor parse(char[] str) {
+    public static HalsteadVisitor2 parse(char[] str) {
         ASTParser parser = ASTParser.newParser(AST.JLS4);
         parser.setSource(str);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -43,7 +43,7 @@ public class HalsteadUtil {
 //        }
 
         // visit nodes of the constructed AST
-        HalsteadVisitor visitor= new HalsteadVisitor();
+        HalsteadVisitor2 visitor= new HalsteadVisitor2();
         cu.accept(visitor);
 
         return visitor;
@@ -51,39 +51,41 @@ public class HalsteadUtil {
 
     public static HalsteadMetrics calculateFileHalstead(String filepath) throws IOException {
         char []codes = ReadFileToCharArray(filepath);
-        HalsteadVisitor halsteadVisitor = parse(codes);
-        int OperatorCount=0;
-        int OperandCount=0;
-
-        OperatorCount=0;
-        for (int f : halsteadVisitor.oprt.values()) {
-            OperatorCount+= f;
+        HalsteadVisitor2 halsteadVisitor = parse(codes);
+//        int OperatorCount=0;
+//        int OperandCount=0;
+//
+//        OperatorCount=0;
+//        for (int f : halsteadVisitor.oprt.values()) {
+//            OperatorCount+= f;
+//        }
+//        OperandCount=0;
+//        for (int f : halsteadVisitor.names.values()) {
+//            OperandCount += f;
+//        }
+        for (String s : halsteadVisitor.names){
+            System.out.println(s);
         }
-        OperandCount=0;
-        for (int f : halsteadVisitor.names.values()) {
-            OperandCount += f;
+        for (String s : halsteadVisitor.snames){
+            System.out.println(s);
         }
 
         HalsteadMetrics hal = new HalsteadMetrics();
-        hal.setParameters(halsteadVisitor.oprt.size(), halsteadVisitor.names.size(), OperatorCount, OperandCount);
+//        hal.setParameters(halsteadVisitor.oprt.size(), halsteadVisitor.names.size(), OperatorCount, OperandCount);
+        hal.setParameters(halsteadVisitor.snames.size(), halsteadVisitor.names.size(), halsteadVisitor.operators, halsteadVisitor.operands);
+
         return hal;
     }
 
     public static HalsteadMetrics calculateFunctionHalstead(String filepath,int start,int end) throws IOException {
-        char []codes = ReadFunctionToCharArray(filepath,start,end);
-        HalsteadVisitor halsteadVisitor = parse(codes);
-        int OperatorCount=0;
-        int OperandCount=0;
-        OperatorCount=0;
-        for (int f : halsteadVisitor.oprt.values()) {
-            OperatorCount+= f;
-        }
-        OperandCount=0;
-        for (int f : halsteadVisitor.names.values()) {
-            OperandCount += f;
-        }
+        String functionStr = ReadFunctionToCharArray(filepath,start,end);
+        String addHeader = "public class A{ \n" + functionStr + "\n}\n";
+        //System.out.println(addHeader);
+        char []codes = addHeader.toCharArray();
+        HalsteadVisitor2 halsteadVisitor = parse(codes);
+
         HalsteadMetrics hal = new HalsteadMetrics();
-        hal.setParameters(halsteadVisitor.oprt.size(), halsteadVisitor.names.size(), OperatorCount, OperandCount);
+        hal.setParameters(halsteadVisitor.snames.size(), halsteadVisitor.names.size(), halsteadVisitor.operators, halsteadVisitor.operands);
         return hal;
     }
 
@@ -106,28 +108,25 @@ public class HalsteadUtil {
 
 
     // parse file in char array
-    public static char[] ReadFunctionToCharArray(String filePath,int start,int end) throws IOException {
+    public static String ReadFunctionToCharArray(String filePath,int start,int end) throws IOException {
         StringBuilder fileData = new StringBuilder(100000);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
         int linePos = 0;
         while ((line = reader.readLine()) != null)
         {
+            linePos ++;
             if (linePos >= start && linePos <= end)
             {
-                fileData.append(line);
+                fileData.append(line).append("\n");
             }
-            else if (linePos < start)
-            {
-                linePos ++;
-            }
-            else
+            else if (linePos > end)
             {
                 break;
             }
         }
         reader.close();
-        return  fileData.toString().toCharArray();
+        return  fileData.toString();
     }
 
 
@@ -179,8 +178,8 @@ public class HalsteadUtil {
     }
 
     public static void main(String[] args) throws IOException {
-        HalsteadMetrics halsteadMetrics = calculateFileHalstead("D:\\resource\\1\\com\\hlc\\alibaba\\ali1.java");
-//        HalsteadMetrics halsteadMetrics= calculateFunctionHalstead("D:\\resource\\1\\com\\hlc\\alibaba\\ali1.java",15,20);
+        HalsteadMetrics halsteadMetrics = calculateFileHalstead("D:\\resource\\1\\com\\hlc\\alibaba\\ali3.java");
+        //HalsteadMetrics halsteadMetrics= calculateFunctionHalstead("D:\\resource\\1\\com\\hlc\\alibaba\\ali1.java",29,51);
         System.out.println(JSON.toJSONString(halsteadMetrics));
     }
 

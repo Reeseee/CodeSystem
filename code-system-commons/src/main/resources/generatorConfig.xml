@@ -32,7 +32,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- 指定数据表 对应的类名-->
-        <table  tableName="projectresult">
+        <table  tableName="fileresult">
         </table>
 
     </context>

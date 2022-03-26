@@ -5,12 +5,12 @@ public class HalsteadMetrics {
     public int DistOperators, DistOperands, TotOperators, TotOperands;
     private int Vocabulary=0;
     private int Proglen=0;
-    private double CalcProgLen=0;
-    private double Volume=0;
-    private double Difficulty=0;
-    private double Effort=0;
-    private double TimeReqProg=0;
-    private double TimeDelBugs=0;
+    private double CalcProgLen=0.0;
+    private double Volume=0.0;
+    private double Difficulty=0.0;
+    private double Effort=0.0;
+    private double TimeReqProg=0.0;
+    private double TimeDelBugs=0.0;
 
 
     // Initialize the variables in the constructor

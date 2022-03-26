@@ -36,7 +36,7 @@ public class FileAnalyzeService {
         FileresultExample.Criteria criteria = fileresultExample.createCriteria();
         criteria.andBelongtoEqualTo(pid);
         criteria.andNameEqualTo(filename);
-        return fileresultDao.selectByExample(fileresultExample);
+        return fileresultDao.selectByExampleWithBLOBs(fileresultExample);
     }
 
     public FileResultVo fileInitialAnalyze(Integer pid,String filename) throws Exception {

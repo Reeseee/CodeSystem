@@ -2,7 +2,9 @@ package com.hlc.codeanalyzesystem.ComplexityAlgorithm.Halstead;
 
 import org.eclipse.jdt.core.dom.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class HalsteadVisitor extends ASTVisitor {
     public HashMap<String, Integer> names = new HashMap<String, Integer>();
@@ -23,6 +25,7 @@ public class HalsteadVisitor extends ASTVisitor {
         {
             this.oprt.put(node.getOperator().toString(), this.oprt.get(node.getOperator().toString())+1);
         }
+        System.out.println(node.getOperator().toString());
         return true;
     }
 
@@ -40,6 +43,7 @@ public class HalsteadVisitor extends ASTVisitor {
         {
             this.oprt.put(node.getOperator().toString(), this.oprt.get(node.getOperator().toString())+1);
         }
+        System.out.println(node.getOperator().toString());
         return true;
     }
 
@@ -57,7 +61,7 @@ public class HalsteadVisitor extends ASTVisitor {
         {
             this.oprt.put(node.getOperator().toString(), this.oprt.get(node.getOperator().toString())+1);
         }
-
+        System.out.println(node.getOperator().toString());
         return true;
     }
 
@@ -75,7 +79,7 @@ public class HalsteadVisitor extends ASTVisitor {
         {
             this.oprt.put(node.getOperator().toString(), this.oprt.get(node.getOperator().toString())+1);
         }
-
+        System.out.println(node.getOperator().toString());
         return true;
     }
 
@@ -95,7 +99,7 @@ public class HalsteadVisitor extends ASTVisitor {
                 this.oprt.put("=", this.oprt.get("=")+1);
             }
         }
-
+        System.out.println(node.toString());
         return true;
     }
 
@@ -116,7 +120,7 @@ public class HalsteadVisitor extends ASTVisitor {
                 this.oprt.put("=", this.oprt.get("=")+1);
             }
         }
-
+        System.out.println(node.toString());
         return true;
     }
 
@@ -225,10 +229,34 @@ public class HalsteadVisitor extends ASTVisitor {
     }
 
 
+    @Override
+    public boolean visit(MethodDeclaration node) {
+        node.accept(new ASTVisitor() {
+            public boolean visit(VariableDeclarationFragment fd) {
+
+                    if (!oprt.containsKey("="))
+                    {
+                        oprt.put("=", 1);
+                    }
+                    else
+                    {
+                        oprt.put("=",oprt.get("=")+1);
+                    }
+
+                System.out.println(fd.toString());
+                return true;
+            }
+
+        });
+        return true;
+    }
+
+
 
     // Override visit the compilationUnit to be able to retrieve the line numbers.
     public boolean visit(CompilationUnit unit)	{
         compilation=unit;
         return true;
     }
+
 }

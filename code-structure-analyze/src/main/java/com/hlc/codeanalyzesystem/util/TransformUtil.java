@@ -144,7 +144,8 @@ public class TransformUtil {
                 varInfoList.add(JdtAstUtil.extractType(v) + " " + v.getName());
             }
             HalsteadMetrics halsteadMetrics = functionComplexityMap.get(key);
-            functionVarLists.add(new FunctionVarList(countId,key.getName().toString(),varInfoList,halsteadMetrics));
+            System.out.println(halsteadMetrics);
+            functionVarLists.add(new FunctionVarList(countId++,key.getName().toString(),varInfoList,halsteadMetrics));
         }
         return functionVarLists;
     }
@@ -164,14 +165,15 @@ public class TransformUtil {
             if (descriptor instanceof SimplePropertyDescriptor) {
                 SimplePropertyDescriptor simple = (SimplePropertyDescriptor) descriptor;
                 Object value = node.getStructuralProperty(simple);
-                res.add(new TreeNodeVo(curId, parentId, value.toString()));
+                //res.add(new TreeNodeVo(curId, parentId, value.toString()));
+                res.add(new TreeNodeVo(curId, parentId, "Simple  " + simple.getId() + " : " + value.toString()));
                 curId++;
                 //res.add(simple.getId() + " (" + simple.toString() + "-" + value.toString() + ")");
             } else if (descriptor instanceof ChildPropertyDescriptor) {
                 ChildPropertyDescriptor child = (ChildPropertyDescriptor) descriptor;
                 ASTNode childNode = (ASTNode) node.getStructuralProperty(child);
                 if (childNode != null) {
-                    res.add(new TreeNodeVo(curId, parentId, childNode.toString()));
+                    res.add(new TreeNodeVo(curId, parentId, "child " + child.getNodeClass().getSimpleName()+ " " + child.getId()  + " " + childNode.toString()));
                     int tempId = curId;
                     curId++;
                     //res.add("Child (" + child.getId() + child.toString() + ") {");
@@ -180,7 +182,7 @@ public class TransformUtil {
                 }
             } else {
                 ChildListPropertyDescriptor list = (ChildListPropertyDescriptor) descriptor;
-                res.add(new TreeNodeVo(curId, parentId,list.getNodeClass().getName()));
+                res.add(new TreeNodeVo(curId, parentId,"list " + list.getId()));
                 int tempId = curId;
                 curId++;
                 //res.add("List (" + list.getId() + "){");

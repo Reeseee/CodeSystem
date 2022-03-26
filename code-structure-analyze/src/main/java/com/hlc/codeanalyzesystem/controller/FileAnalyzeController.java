@@ -36,7 +36,7 @@ public class FileAnalyzeController {
     public FileResultVo fileInitialAnalyze(@PathVariable("pid") Integer pid, @RequestParam("fileName") String fileName,@RequestParam("userId") Integer userId){
         try {
             FileResultVo fileresult = fileAnalyzeService.fileInitialAnalyze(pid,fileName);
-            recordService.insertRecord(userId,pid,fileName,"fileInitialAnalyze","/fileAnalyze/"+ pid + "/initial?" +"userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId,pid,fileName,"fileInitialAnalyze","/fileAnalyze/initial/"+ pid + "?" +"userId = " + userId + "&fileName=" + fileName);
             return fileresult;
         }
         catch (Exception e)
@@ -52,7 +52,7 @@ public class FileAnalyzeController {
     public FileDependencyVo fileDependencyGraph(@PathVariable("pid") Integer pid, @RequestParam("fileName") String fileName,@RequestParam("userId") Integer userId){
         try {
             FileDependencyVo fileDependencyVo = fileAnalyzeService.fileDependency(pid,fileName);
-            recordService.insertRecord(userId,pid,fileName,"fileDependencyGraph","/fileAnalyze/"+ pid + "/dependency?" +"userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId,pid,fileName,"fileDependencyGraph","/fileAnalyze/dependency/"+ pid + "?" +"userId = " + userId + "&fileName=" + fileName);
             return fileDependencyVo;
         }
         catch (Exception e){
@@ -67,7 +67,7 @@ public class FileAnalyzeController {
     public FileDependencyVo fileCallGraph(@PathVariable("pid") Integer pid, @RequestParam("fileName") String fileName,@RequestParam("userId") Integer userId){
         try {
             FileDependencyVo fileDependencyVo = fileAnalyzeService.fileCall(pid,fileName);
-            recordService.insertRecord(userId,pid,fileName,"fileCallGraph","/fileAnalyze/"+ pid + "/call?" +"userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId,pid,fileName,"fileCallGraph","/fileAnalyze/call/"+ pid + "?" +"userId = " + userId + "&fileName=" + fileName);
             return fileDependencyVo;
         }
         catch (Exception e)
@@ -83,7 +83,7 @@ public class FileAnalyzeController {
     public List<TreeNodeVo> fileAST(@PathVariable("pid") Integer pid, @RequestParam("fileName") String fileName, @RequestParam("userId") Integer userId){
         try {
             List<TreeNodeVo> tree = fileAnalyzeService.fileAst(pid,fileName);
-            recordService.insertRecord(userId,pid,fileName,"fileASTGraph","/fileAnalyze/"+ pid + "/ast?" +"userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId,pid,fileName,"fileASTGraph","/fileAnalyze/ast/"+ pid + "?" +"userId = " + userId + "&fileName=" + fileName);
             return tree;
         }
         catch(Exception e) {
@@ -129,7 +129,7 @@ public class FileAnalyzeController {
                     return -1;
                 }
             }
-            recordService.insertRecord(userId, pid, fileName, "fileDependencyGraph", "/fileAnalyze/" + pid + "/dependency/export?" + "userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId, pid, fileName, "fileDependencyGraph", "/fileAnalyze/dependency/export/" + pid + "?" + "userId = " + userId + "&fileName=" + fileName);
             return 0;
         } catch (Exception e) {
             log.info("fileDependencyAnalyze exception");
@@ -158,7 +158,7 @@ public class FileAnalyzeController {
                     return -1;
                 }
             }
-            recordService.insertRecord(userId, pid, fileName, "fileCallGraph", "/fileAnalyze/" + pid + "/call/export?" + "userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId, pid, fileName, "fileCallGraph", "/fileAnalyze/call/export/" + pid + "?" + "userId = " + userId + "&fileName=" + fileName);
             return 0;
         } catch (Exception e) {
             log.info("fileCallAnalyze exception");
@@ -183,7 +183,7 @@ public class FileAnalyzeController {
                     return -1;
                 }
             }
-            recordService.insertRecord(userId, pid, fileName, "fileAst", "/fileAnalyze/" + pid + "/ast/export?" + "userId = " + userId + "&fileName=" + fileName);
+            recordService.insertRecord(userId, pid, fileName, "fileAst", "/fileAnalyze/ast/export/" + pid + "?" + "userId = " + userId + "&fileName=" + fileName);
             return 0;
         }
         catch(Exception e) {

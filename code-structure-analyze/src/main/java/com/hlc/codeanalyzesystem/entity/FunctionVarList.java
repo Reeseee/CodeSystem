@@ -49,4 +49,12 @@ public class FunctionVarList {
     public void setVarList(List<String> varList) {
         this.varList = varList;
     }
+
+    public HalsteadMetrics getHalsteadMetrics() {
+        return halsteadMetrics;
+    }
+
+    public void setHalsteadMetrics(HalsteadMetrics halsteadMetrics) {
+        this.halsteadMetrics = halsteadMetrics;
+    }
 }

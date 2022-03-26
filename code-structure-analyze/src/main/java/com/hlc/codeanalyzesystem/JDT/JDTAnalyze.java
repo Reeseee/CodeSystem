@@ -240,7 +240,7 @@ public class JDTAnalyze {
     }
 
     public static void testPrintAst(){
-        String filePath = "D:\\leetCodePractice\\src\\com\\hlc\\alibaba\\ali1.java";
+        String filePath = "D:\\resource\\1\\com\\hlc\\alibaba\\ali2.java";
         CompilationUnit comp = JdtAstUtil.getCompilationUnit(filePath);
         List<TreeNodeVo> list = TransformUtil.transformASTNodeToList(comp);
 //        for(TreeNodeVo treeNodeVo : list)
@@ -248,9 +248,10 @@ public class JDTAnalyze {
 //            System.out.println(treeNodeVo.getId() + " " + " " + treeNodeVo.getPid() + " " + treeNodeVo.getNodeMessage());
 //        }
         List<TreeNodeVo> res = TransformUtil.buildTree(list,0);
-        Map<String,Object> map = new HashMap<>();
-        map.put("AST",res);
-        System.out.println(JSONUtil.toJsonStr(map));
+        list.get(0).setChildren(res);
+        List<TreeNodeVo> ans = new ArrayList<>();
+        ans.add(list.get(0));
+        System.out.println(JSON.toJSONString(ans));
     }
 
     public static void testCall(){
@@ -273,7 +274,7 @@ public class JDTAnalyze {
     }
 
     public static void main(String[] args) throws Exception {
-        testProjectAnalyze();
+        testPrintAst();
     }
 
     public ProjectresultWithBLOBs projectInitialAnalyze(Integer id,ProjectresultWithBLOBs projectresultWithBLOBs) throws Exception {
