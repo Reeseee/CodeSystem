@@ -24,6 +24,7 @@ public class ClientMain {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setLocation("D:\\resource\\");
         //单个文件最大   KB,MB
         factory.setMaxFileSize(DataSize.ofMegabytes(100L));
         /// 设置总上传数据总大小

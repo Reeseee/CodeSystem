@@ -65,18 +65,20 @@ public class ProjectService {
         File file;
         String fileName="";
         String filePath="";
+        Integer pid = insertProject(projectName,userId);
+        if(pid == null){
+            throw new Exception("insert exception");
+        }
+
         for (MultipartFile f : dir) {
             //todo 这里可能存在问题，不同浏览器这个获取结果不一样
             fileName=f.getOriginalFilename();
-            Integer pid = insertProject(projectName,userId);
-            if(pid == null){
-                throw new Exception("insert exception");
-            }
+            
             filePath=PROJECT_DIR + pid + "//" + fileName.substring(0,fileName.lastIndexOf("/"));
             if(!FileUtil.isDir(filePath)){
                 FileUtil.makeDirs(filePath);
             }
-            file = new File(PROJECT_DIR + " " + pid + "//" + fileName);
+            file = new File(PROJECT_DIR + pid + "//" + fileName);
             file.createNewFile();
             f.transferTo(file);
         }

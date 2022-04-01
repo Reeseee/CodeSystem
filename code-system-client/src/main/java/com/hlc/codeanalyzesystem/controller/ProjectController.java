@@ -43,15 +43,15 @@ public class ProjectController {
     }
 
 
-    @RequestMapping(value="/upload",method= RequestMethod.POST)
-    public int upload(@RequestParam("dir") MultipartFile[] dir, @RequestParam("userDefineName") String projectName, @RequestParam("userId") Integer userId) {
+    @PostMapping(value="/upload")
+    public void upload(@RequestParam("files") MultipartFile[] dir, @RequestParam("userDefineName") String projectName, @RequestParam("id") Integer userId) {
         try {
+            log.info("project upload start");
             projectService.saveProject(dir,projectName,userId);
         }
         catch (Exception e) {
+            e.printStackTrace();
             log.info("project upload Exception");
-            return -1;
         }
-        return 0;
     }
 }
