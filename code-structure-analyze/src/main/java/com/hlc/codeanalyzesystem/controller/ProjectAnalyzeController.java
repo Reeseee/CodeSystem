@@ -34,7 +34,7 @@ public class ProjectAnalyzeController {
     public ProjectResultVo projectInitialAnalyze(@PathVariable("id") Integer id, @RequestParam("userId") Integer userId){
         try {
             ProjectResultVo projectResultVo = projectAnalyzeService.projectInitialAnalyze(id);
-            recordService.insertRecord(userId,id,"","ProjectInitialAnalyze","/projectAnalyze/initial/"+ id + "?" +"userId = " + userId);
+            recordService.insertRecord(userId,id,"","ProjectAnalyze","/projectAnalyze/initial/"+ id + "?" +"userId = " + userId);
             System.out.println(JSON.toJSONString(projectResultVo));
             return projectResultVo;
         }
@@ -50,7 +50,7 @@ public class ProjectAnalyzeController {
     public G6Graph projectDependencyGraph(@PathVariable("id") Integer id, @RequestParam("userId") Integer userId){
         Graph graph = projectAnalyzeService.dependencyGraph(id);
         G6Graph g6Graph = TransformUtil.transformToG6(graph);
-        recordService.insertRecord(userId,id,"","ProjectDependencyAnalyze","/projectAnalyze/dependency/"+ id + "?" +"userId = " + userId);
+        recordService.insertRecord(userId,id,"","/dependency","/projectAnalyze/dependency/"+ id + "?" +"userId = " + userId);
         return g6Graph;
     }
 
@@ -59,7 +59,7 @@ public class ProjectAnalyzeController {
     public G6Graph projectCallGraph(@PathVariable("id") Integer id,@RequestParam("userId") Integer userId){
         Graph graph = projectAnalyzeService.callGraph(id);
         G6Graph g6Graph = TransformUtil.transformToG6(graph);
-        recordService.insertRecord(userId,id,"","ProjectCallAnalyze","/projectAnalyze/call/"+ id + "?" +"userId = " + userId);
+        recordService.insertRecord(userId,id,"","/call","/projectAnalyze/call/"+ id + "?" +"userId = " + userId);
         return g6Graph;
     }
 
@@ -84,7 +84,7 @@ public class ProjectAnalyzeController {
                     return -1;
                 }
             }
-            recordService.insertRecord(userId,id,"","ProjectDependencyExport","/projectAnalyze/dependency/export/"+ id + "?" +"userId = " + userId);
+            //recordService.insertRecord(userId,id,"","ProjectDependencyExport","/projectAnalyze/dependency/export/"+ id + "?" +"userId = " + userId);
             return 0;
         } catch (Exception e) {
             log.info("projectDependencyExport exception");
@@ -113,7 +113,7 @@ public class ProjectAnalyzeController {
                     return -1;
                 }
             }
-            recordService.insertRecord(userId,id,"","ProjectCallExport","/projectAnalyze/call/export/"+ id + "?" +"userId = " + userId);
+            //recordService.insertRecord(userId,id,"","ProjectCallExport","/projectAnalyze/call/export/"+ id + "?" +"userId = " + userId);
             return 0;
         } catch (Exception e) {
             log.info("projectCallExport exception");
