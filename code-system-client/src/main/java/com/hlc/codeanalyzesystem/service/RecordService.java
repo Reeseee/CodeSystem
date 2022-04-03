@@ -30,9 +30,17 @@ public class RecordService {
     public List<Record> selectByUserId(Integer userId, Integer pageNo){
         RecordExample recordExample = new RecordExample();
         RecordExample.Criteria criteria = recordExample.createCriteria();
-        criteria.andIdEqualTo(userId);
+        criteria.andUseridEqualTo(userId);
         recordExample.setLeftLimit((pageNo - 1) * 8);
         recordExample.setLimitSize(8);
         return recordDao.selectByExample(recordExample);
+    }
+
+    public Long getPageCount(Integer userId){
+        RecordExample recordExample = new RecordExample();
+        RecordExample.Criteria criteria = recordExample.createCriteria();
+        criteria.andUseridEqualTo(userId);
+        long cnt = recordDao.countByExample(recordExample);
+        return cnt % 8 == 0 ? cnt/8 : cnt/8 + 1;
     }
 }
